@@ -16,8 +16,9 @@
         <div class="col-lg-offset-3 col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">AJax ToDo List <a href="#" class="pull-right"  data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i></a></h3>
+                    <h3 class="panel-title">AJax ToDo List <a href="#" class="pull-right"  id="addNew" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i></a></h3>
                 </div>
+
                 <div class="panel-body">
                     <ul class="list-group">
                         <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
@@ -42,7 +43,8 @@
                         <h4 class="modal-title" id="title">Add New Item</h4>
                     </div>
                     <div class="modal-body">
-                        <p><input type="text" placeholder="Wwrite Item Here" id="addItem" class="form-control"></p>
+
+                        <p><input type="text" placeholder="Write Item Here" id="addItem" class="form-control" ></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-warning" data-dismiss="modal" id="delete" style="display: none;">Delete</button>
@@ -55,16 +57,14 @@
     </div>
 </div>
 
-
-
-
-
+{{ csrf_field() }}
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <script>
-    $(document).ready(function() {
+
+$(document).ready(function() {
         $('.ourItem').each(function(){
             $(this).click(function (event) {
                 var text = $(this).text();
@@ -73,10 +73,27 @@
                 $('#delete').show('400');
                 $('#saveChanges').show('400');
                 $('#AddButton').hide('400');
-
                 console.log(text);
             });
         });
+
+
+            $('#addNew').click(function (event) {
+                $('#title').text('Add New Item');
+                $('#addItem').val("");
+                $('#delete').hide('400');
+                $('#saveChanges').hide('400');
+                $('#AddButton').show('400');
+                //console.log(text);
+            });
+
+            // AJAX POST DATA
+            $('#AddButton').click(function () {
+                var text = $('#addItem').val();
+                $.post('list', {'text' : text,'_token':$('input[name=_token]').val()}, function(data) {
+                    console.log(data);
+                });
+            });
     });
 </script>
 </body>
