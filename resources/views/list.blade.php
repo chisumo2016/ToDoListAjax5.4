@@ -19,16 +19,12 @@
                     <h3 class="panel-title">AJax ToDo List <a href="#" class="pull-right"  id="addNew" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i></a></h3>
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body" id="items">
                     <ul class="list-group">
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Dapibus ac facilisis in</li>
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Morbi leo risus</li>
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Porta ac consectetur ac</li>
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Vestibulum at eros</li>
+                        @foreach($items  as $item)
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">{{ $item->item }}</li>
+                        @endforeach
+
                     </ul>
                 </div>
             </div>
@@ -49,7 +45,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-warning" data-dismiss="modal" id="delete" style="display: none;">Delete</button>
                         <button type="button" class="btn btn-primary" id="saveChanges" style="display: none;">Save changes</button>
-                        <button type="button" class="btn btn-primary" id="AddButton">Add Item</button>
+                        <button type="button" class="btn btn-primary" id="AddButton" data-dismiss="modal">Add Item</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -73,7 +69,7 @@ $(document).ready(function() {
                 $('#delete').show('400');
                 $('#saveChanges').show('400');
                 $('#AddButton').hide('400');
-                console.log(text);
+                  console.log(text);
             });
         });
 
@@ -84,7 +80,7 @@ $(document).ready(function() {
                 $('#delete').hide('400');
                 $('#saveChanges').hide('400');
                 $('#AddButton').show('400');
-                //console.log(text);
+                  //console.log(text);
             });
 
             // AJAX POST DATA
@@ -92,6 +88,7 @@ $(document).ready(function() {
                 var text = $('#addItem').val();
                 $.post('list', {'text' : text,'_token':$('input[name=_token]').val()}, function(data) {
                     console.log(data);
+                    $('#items').load(location.href + ' #items');
                 });
             });
     });

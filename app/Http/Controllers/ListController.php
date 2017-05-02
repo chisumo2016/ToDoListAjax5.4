@@ -10,7 +10,8 @@ class ListController extends Controller
     //
     public function index()
     {
-       return view('list');
+        $items = Item::all();
+       return view('list', compact('items'));
     }
 
     public function create(request $request)
