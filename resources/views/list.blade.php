@@ -22,7 +22,9 @@
                 <div class="panel-body" id="items">
                     <ul class="list-group">
                         @foreach($items  as $item)
-                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">{{ $item->item }}</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">{{ $item->item }}
+                            <input type="hidden" id="itemId" value="{{ $item->id }}">
+                        </li>
                         @endforeach
 
                     </ul>
@@ -39,7 +41,7 @@
                         <h4 class="modal-title" id="title">Add New Item</h4>
                     </div>
                     <div class="modal-body">
-
+                        <input type="hidden" id="id">
                         <p><input type="text" placeholder="Write Item Here" id="addItem" class="form-control" ></p>
                     </div>
                     <div class="modal-footer">
@@ -59,38 +61,54 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <script>
+//    $('.ourItem').each(function(){ });
+   $(document).ready(function () {
+    $(document).on('click', '.ourItem', function (event) {
 
-$(document).ready(function() {
-        $('.ourItem').each(function(){
-            $(this).click(function (event) {
                 var text = $(this).text();
+                var id = $(this).find('#itemId').val();
+
                 $('#title').text('Edit Item');
                 $('#addItem').val(text);
                 $('#delete').show('400');
                 $('#saveChanges').show('400');
                 $('#AddButton').hide('400');
+                $('#id').val(id);
                   console.log(text);
-            });
+//        $(this).click(function (event) {                });
         });
 
-
-            $('#addNew').click(function (event) {
+            $(document).on('click', '#addNew', function (event) {
                 $('#title').text('Add New Item');
                 $('#addItem').val("");
                 $('#delete').hide('400');
                 $('#saveChanges').hide('400');
                 $('#AddButton').show('400');
-                  //console.log(text);
             });
 
+    //console.log(text);
+//    $('#addNew').click(function (event) {
+//            });
+
             // AJAX POST DATA
-            $('#AddButton').click(function () {
+            $('#AddButton').click(function (event) {
                 var text = $('#addItem').val();
                 $.post('list', {'text' : text,'_token':$('input[name=_token]').val()}, function(data) {
                     console.log(data);
-                    $('#items').load(location.href + ' #items');
+                    $('#items').load(location.href + ' #items'); //Refreshing the pages
                 });
             });
+
+           // Delete with Ajax
+        $('#delete').click(function(event) {
+            var id = $("#id").val();  // id fom the modal
+            //Post the Id to the Controller
+            $.post('delete', {'id' : id,'_token':$('input[name=_token]').val()}, function(data) {
+                console.log(data);
+                $('#items').load(location.href + ' #items'); //Refreshing the pages
+            });
+
+        });
     });
 </script>
 </body>
