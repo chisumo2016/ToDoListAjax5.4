@@ -46,7 +46,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-warning" data-dismiss="modal" id="delete" style="display: none;">Delete</button>
-                        <button type="button" class="btn btn-primary" id="saveChanges" style="display: none;">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="saveChanges" style="display: none;"  data-dismiss="modal">Save changes</button>
                         <button type="button" class="btn btn-primary" id="AddButton" data-dismiss="modal">Add Item</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -69,6 +69,7 @@
                 var id = $(this).find('#itemId').val();
 
                 $('#title').text('Edit Item');
+                var text = $.trim(text);
                 $('#addItem').val(text);
                 $('#delete').show('400');
                 $('#saveChanges').show('400');
@@ -93,10 +94,15 @@
             // AJAX POST DATA
             $('#AddButton').click(function (event) {
                 var text = $('#addItem').val();
-                $.post('list', {'text' : text,'_token':$('input[name=_token]').val()}, function(data) {
-                    console.log(data);
-                    $('#items').load(location.href + ' #items'); //Refreshing the pages
-                });
+                if (text == "" ){
+                    alert('Please Type anything for item');
+                }else {
+                    $.post('list', {'text' : text,'_token':$('input[name=_token]').val()}, function(data) {
+                        console.log(data);
+                        $('#items').load(location.href + ' #items'); //Refreshing the pages
+                    });
+                }
+
             });
 
            // Delete with Ajax
@@ -105,8 +111,21 @@
             //Post the Id to the Controller
             $.post('delete', {'id' : id,'_token':$('input[name=_token]').val()}, function(data) {
                 console.log(data);
-                $('#items').load(location.href + ' #items'); //Refreshing the pages
+                $('#items').load(location.href +
+                    ' #items'); //Refreshing the pages
             });
+
+        });
+
+        // Delete with Ajax
+        $('#saveChanges').click(function(event) {
+            var id = $("#id").val();  // id fom the modal
+            var value = $.trim($("#addItem").val());  // Add Item
+            //Post the Id to the Controller
+            $.post('update', {'id' : id,'value' : value, '_token':$('input[name=_token]').val()}, function(data) {
+                console.log(data);
+                $('#items').load(location.href + ' #items'); //Refreshing the pages
+        });
 
         });
     });
