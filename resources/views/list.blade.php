@@ -20,31 +20,34 @@
                 </div>
                 <div class="panel-body">
                     <ul class="list-group">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Cras justo odio</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Dapibus ac facilisis in</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Morbi leo risus</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Porta ac consectetur ac</li>
+                        <li class="list-group-item ourItem"  data-toggle="modal" data-target="#myModal">Vestibulum at eros</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         {{--Modal --}}
-
         <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Modal title</h4>
+                        <h4 class="modal-title" id="title">Add New Item</h4>
                     </div>
                     <div class="modal-body">
-                        <p>One fine body&hellip;</p>
+                        <p><input type="text" placeholder="Wwrite Item Here" id="addItem" class="form-control"></p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" id="delete" style="display: none;">Delete</button>
+                        <button type="button" class="btn btn-primary" id="saveChanges" style="display: none;">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="AddButton">Add Item</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -59,5 +62,22 @@
 
 <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.ourItem').each(function(){
+            $(this).click(function (event) {
+                var text = $(this).text();
+                $('#title').text('Edit Item');
+                $('#addItem').val(text);
+                $('#delete').show('400');
+                $('#saveChanges').show('400');
+                $('#AddButton').hide('400');
+
+                console.log(text);
+            });
+        });
+    });
+</script>
 </body>
 </html>
